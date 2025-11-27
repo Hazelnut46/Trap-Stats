@@ -1,5 +1,31 @@
 import { useState } from "react";
 import RadialChart from "../components/RadialChart";
+import useTypewriter from "../hooks/useTypewriter";
+const GitHubIcon = () => (
+  <svg
+    height="32"
+    width="32"
+    viewBox="0 0 16 16"
+    fill="white"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 
+      5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49 
+      -2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+      -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 
+      2.33.66.07-.52.28-.87.51-1.07-1.78-.2
+      -3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15
+      -.08-.2-.36-1.02.08-2.12 
+      0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27 
+      c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 
+      2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 
+      1.27.82 2.15 0 3.07-1.87 3.75-3.65 
+      3.95.29.25.54.73.54 1.48 0 1.07-.01 
+      1.93-.01 2.2 0 .21.15.46.55.38A8.013 
+      8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+  </svg>
+);
+
 
 // Words you don't want in top list (common English words)
 const STOPWORDS = new Set([
@@ -12,6 +38,11 @@ const STOPWORDS = new Set([
 export default function Home() {
   const [text, setText] = useState("");
   const [results, setResults] = useState(null);
+
+
+  const title = useTypewriter("Lyric Analyzer 💜", 70);
+
+
   const downloadCSV = () => {
   if (!results || !results.topWords) return;
 
@@ -95,13 +126,30 @@ export default function Home() {
   
 
   return (
+    
     <div className="min-h-screen p-6">
+      <div className="absolute top-4 right-6">
+      <a
+        href="https://github.com/Hazelnut46/Trap-Stats"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="opacity-80 hover:opacity-100 transition"
+      >
+        <GitHubIcon />
+      </a>
+    </div>
+
+    {/* The rest of your code continues here */}
+    <div className="max-w-3xl mx-auto text-center mt-12"></div>
+      
       <div className="max-w-3xl mx-auto text-center mt-12">
         
+        
         <h1 className="text-5xl font-bold text-neonPurple mb-6">
-          Lyric Analyzer 💜
-        </h1>
-        <div className="flex gap-3 justify-center mt-4">
+  {title}
+</h1>
+
+<div className="flex gap-3 justify-center mt-4">
   <button onClick={analyze} className="px-6 py-3 bg-neonPurple text-black font-bold rounded-xl hover:bg-purple-400 transition">
     Analyze
   </button>
@@ -127,23 +175,9 @@ export default function Home() {
         />
 
         {/* BUTTONS */}
-        <div className="flex gap-3 justify-center mt-4">
-          <button
-            onClick={analyze}
-            className="px-6 py-3 bg-neonPurple text-black font-bold rounded-xl hover:bg-purple-400 transition"
-          >
-            Analyze
-          </button>
 
-          <button
-            onClick={clearAll}
-            className="px-5 py-3 bg-transparent border border-gray-600 text-white rounded-xl hover:bg-white/5 transition"
-          >
-            Clear
-          </button>
-        </div>
 
-        {/* RESULTS SECTION */}
+        {/* RESULTS SECTION */} 
         <div className="mt-8 text-left">
 
           {!results && (
