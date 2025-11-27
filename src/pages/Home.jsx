@@ -12,6 +12,28 @@ const STOPWORDS = new Set([
 export default function Home() {
   const [text, setText] = useState("");
   const [results, setResults] = useState(null);
+  const downloadCSV = () => {
+  if (!results || !results.topWords) return;
+
+  let csv = "word,count\n";
+
+  results.topWords.forEach((item) => {
+    // Use a template literal (backticks) here
+    csv += `${item.word},${item.count}\n`;
+  });
+
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "lyric-analysis.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+};
+
+  
+  
 
   // Clean text: lowercase, remove symbols, keep only letters/numbers/apostrophes
   const sanitize = (input) => {
@@ -42,6 +64,8 @@ export default function Home() {
       if (!word) return;
       totalLength += word.length;
       freq[word] = (freq[word] || 0) + 1;
+
+      
     });
 
     const freqArray = Object.entries(freq)
@@ -60,12 +84,15 @@ export default function Home() {
       avgWordLength: (totalLength / totalWords).toFixed(2),
       topWords
     });
+    
   };
 
   const clearAll = () => {
     setText("");
     setResults(null);
   };
+  
+  
 
   return (
     <div className="min-h-screen p-6">
@@ -74,6 +101,22 @@ export default function Home() {
         <h1 className="text-5xl font-bold text-neonPurple mb-6">
           Lyric Analyzer 💜
         </h1>
+        <div className="flex gap-3 justify-center mt-4">
+  <button onClick={analyze} className="px-6 py-3 bg-neonPurple text-black font-bold rounded-xl hover:bg-purple-400 transition">
+    Analyze
+  </button>
+
+  <button onClick={clearAll} className="px-5 py-3 bg-transparent border border-gray-600 text-white rounded-xl hover:bg-white/5 transition">
+    Clear
+  </button>
+
+  <button
+    onClick={downloadCSV}
+    className="px-6 py-3 bg-purple-800 text-white font-bold rounded-xl hover:bg-purple-700 transition"
+  >
+    Download CSV
+  </button>
+</div>
 
         {/* TEXTAREA */}
         <textarea
@@ -177,6 +220,7 @@ export default function Home() {
                 </div>
 
               </div>
+              
 
               {/* ⭐ RADIAL CHART BELOW GRID ⭐ */}
               {results.topWords && results.topWords.length > 0 && (
